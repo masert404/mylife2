@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наше путешествие длиною в жизнь</title>
+    <style>
+        /* Подключаем красивые шрифты Playfair Display и Montserrat */
+        @import url('https://googleapis.com');
+        
+        :root { --bg-color: #DCD1C4; --text-color: #2F2C2A; --accent-color: #8C6239; --light-accent: #C4B5A5; --card-bg: #F4EFE9; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.7; font-weight: 300; overflow-x: hidden; }
+        h1, h2, h3, .motto, .c-num, .d-date { font-family: 'Playfair Display', serif; }
+        
+        nav { display: flex; justify-content: center; padding: 20px; gap: 20px; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; position: sticky; top: 0; background: rgba(220, 209, 196, 0.95); z-index: 100; border-bottom: 1px solid rgba(196, 181, 165, 0.2); backdrop-filter: blur(5px); }
+        nav a { color: var(--text-color); text-decoration: none; opacity: 0.7; font-weight: 400; transition: all 0.3s; position: relative; }
+        nav a::after { content: ''; display: block; width: 0; height: 1px; background: var(--accent-color); transition: width 0.3s; position: absolute; bottom: -4px; left: 0; }
+        nav a:hover { opacity: 1; color: var(--accent-color); } nav a:hover::after { width: 100%; }
+        nav a.active { opacity: 1; color: var(--accent-color); font-weight: 500; }
+        nav a.active::after { width: 100%; }
+
+        .hero { max-width: 800px; margin: 40px auto; text-align: center; padding: 0 20px; }
+        .hero h1 { font-size: 2.8rem; margin-bottom: 15px; font-style: italic; }
+        .motto { font-size: 1.1rem; color: var(--accent-color); margin-bottom: 30px; font-style: italic; }
+        .c-wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 35px; }
+        .c-box { background: var(--card-bg); padding: 18px; border-radius: 6px; border: 1px solid var(--light-accent); text-align: center; box-shadow: 0 8px 15px rgba(0,0,0,0.02); transition: transform 0.3s; }
+        .c-box:hover { transform: translateY(-3px); }
+        .c-num { font-size: 2.2rem; color: var(--accent-color); font-weight: 500; margin-bottom: 3px; }
+        .c-lab { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #59524C; }
+        .hero-img { width: 100%; max-height: 520px; object-fit: cover; border-radius: 6px; border: 1px solid var(--light-accent); box-shadow: 0 10px 25px rgba(0,0,0,0.04); cursor: zoom-in; }
+        
+        #album-lightbox { display: none; position: fixed; z-index: 99999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 25, 23, 0.96); align-items: center; justify-content: center; user-select: none; }
+        @media (max-width: 768px) { .c-wrap { grid-template-columns: 1fr; } }
+        footer { text-align: center; padding: 40px 20px; font-size: 0.8rem; color: #59524C; border-top: 1px solid var(--light-accent); letter-spacing: 0.05em; margin-top: 40px; }
+    </style>
+    <script>
+        function runSystemCounters() {
+            var d = { 'meet-counter': new Date(Date.UTC(2023, 4, 5)), 'love-counter': new Date(Date.UTC(2023, 7, 29)), 'wedding-counter': new Date(Date.UTC(2024, 6, 24)) };
+            var t = new Date(), tUTC = Date.UTC(t.getFullYear(), t.getMonth(), t.getDate());
+            for (var id in d) { var el = document.getElementById(id); if (el) { var df = Math.floor((tUTC - d[id].getTime()) / 86400000); if (df > 0) el.textContent = df; } }
+        }
+        window.addEventListener('DOMContentLoaded', runSystemCounters);
+
+        function openGlobalZoom(el) {
+            var lb = document.getElementById('album-lightbox'), lbi = document.getElementById('album-lightbox-img');
+            if (lb && lbi) { lbi.src = el.src; lb.style.display = 'flex'; }
+        }
+    </script>
+</head>
+<body>
+    <!-- НАВИГАЦИЯ НА ДРУГИЕ ФАЙЛЫ -->
+    <nav>
+        <a href="index.html" class="active">Мы</a>
+        <a href="diary.html">Главы</a>
+        <a href="travel.html">Дороги</a>
+        <a href="gallery.html">Альбом</a>
+    </nav>
+
+    <header class="hero">
+        <h1>Наше путешествие длиною в жизнь</h1>
+        <p class="motto">Пространство для двоих: воспоминания, дороги и смыслы</p>
+        <div class="c-wrap">
+            <div class="c-box"><div class="c-num" id="meet-counter">1258</div><div class="c-lab">со знакомства</div></div>
+            <div class="c-box"><div class="c-num" id="love-counter">1142</div><div class="c-lab">в отношениях</div></div>
+            <div class="c-box"><div class="c-num" id="wedding-counter">812</div><div class="c-lab">в браке 🤍</div></div>
+        </div>
+        <img src="свадебное.jpg" class="hero-img" alt="Свадьба" onclick="openGlobalZoom(this)">
+    </header>
+
+    <footer><p>Только для нас двоих. Создано с любовью.</p></footer>
+
+    <div id="album-lightbox" onclick="this.style.display='none'">
+        <img id="album-lightbox-img" src="" alt="Zoom" style="max-width: 85%; max-height: 85vh; object-fit: contain; border-radius: 4px; margin: auto; display: block;">
+    </div>
+</body>
+</html>

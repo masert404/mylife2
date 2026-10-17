@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Наши дороги — Наше путешествие</title>
+    <style>
+        @import url('https://googleapis.com');
+        :root { --bg-color: #DCD1C4; --text-color: #2F2C2A; --accent-color: #8C6239; --light-accent: #C4B5A5; --card-bg: #F4EFE9; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.7; font-weight: 300; }
+        h1, h2, h3 { font-family: 'Playfair Display', serif; }
+        
+        nav { display: flex; justify-content: center; padding: 20px; gap: 20px; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; position: sticky; top: 0; background: rgba(220, 209, 196, 0.95); z-index: 100; border-bottom: 1px solid rgba(196, 181, 165, 0.2); backdrop-filter: blur(5px); }
+        nav a { color: var(--text-color); text-decoration: none; opacity: 0.7; font-weight: 400; transition: all 0.3s; position: relative; }
+        nav a::after { content: ''; display: block; width: 0; height: 1px; background: var(--accent-color); transition: width 0.3s; position: absolute; bottom: -4px; left: 0; }
+        nav a:hover { opacity: 1; color: var(--accent-color); } nav a:hover::after { width: 100%; }
+        nav a.active { opacity: 1; color: var(--accent-color); font-weight: 500; } nav a.active::after { width: 100%; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .section-title { text-align: center; font-size: 1.8rem; margin-bottom: 35px; }
+        .section-title::after { content: ''; display: block; width: 40px; height: 1px; background-color: var(--accent-color); margin: 10px auto 0; }
+        
+        .travel-list { display: flex; flex-direction: column; gap: 35px; }
+        .t-item { display: flex; align-items: center; gap: 30px; }
+        .t-img { width: 45%; height: 260px; object-fit: cover; border-radius: 6px; border: 1px solid var(--light-accent); box-shadow: 0 6px 15px rgba(0,0,0,0.02); cursor: zoom-in; }
+        .t-info { width: 55%; } .t-info h3 { font-size: 1.2rem; margin-bottom: 6px; }
+        
+        #album-lightbox { display: none; position: fixed; z-index: 99999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 25, 23, 0.96); align-items: center; justify-content: center; user-select: none; }
+        @media (max-width: 768px) { .t-item { flex-direction: column; } .t-img, .t-info { width: 100%; } }
+        footer { text-align: center; padding: 40px 20px; font-size: 0.8rem; color: #59524C; border-top: 1px solid var(--light-accent); letter-spacing: 0.05em; }
+    </style>
+    <script>
+        function openGlobalZoom(el) {
+            var lb = document.getElementById('album-lightbox'), lbi = document.getElementById('album-lightbox-img');
+            if (lb && lbi) { lbi.src = el.src; lb.style.display = 'flex'; }
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Мы</a>
+        <a href="diary.html">Главы</a>
+        <a href="travel.html" class="active">Дороги</a>
+        <a href="gallery.html">Альбом</a>
+    </nav>
+
+    <section class="container">
+        <h2 class="section-title">Нашие дороги</h2>
+        <div class="travel-list">
+            <div class="t-item">
+                <img src="тосно.jpg" class="t-img" alt="Тосно" onclick="openGlobalZoom(this)">
+                <div class="t-info"><h3>Поездка в Тосно</h3><div style="font-size: 0.8rem; color: var(--accent-color); margin-bottom: 4px;">Наши дни</div><p>Новые отметки, общие дороги, уютные моменты пути.</p></div>
+            </div>
+            <div class="t-item">
+                <img src="Сортавала.jpg" class="t-img" alt="Сортавала" onclick="openGlobalZoom(this)">
+                <div class="t-info"><h3>Отпуск в Сортавале</h3><div style="font-size: 0.8rem; color: var(--accent-color); margin-bottom: 4px;">Октябрь 2023</div><p>Осенняя Карелия. Холодный воздух, природа и первое приключение вдвоём.</p></div>
+            </div>
+        </div>
+    </section>
+
+    <section class="container">
+        <h2 class="section-title">Карта наших дорог</h2>
+        <div style="background: var(--card-bg); padding: 30px; border-radius: 6px; border: 1px dashed var(--accent-color); text-align: center;">
+            <p>Здесь со временем появится интерактивная карта наших будущих маршрутов 🗺️</p>
+        </div>
+    </section>
+
+    <footer><p>Только для нас двоих. Создано с любовью.</p></footer>
+
+    <div id="album-lightbox" onclick="this.style.display='none'">
+        <img id="album-lightbox-img" src="" alt="Zoom" style="max-width: 85%; max-height: 85vh; object-fit: contain; border-radius: 4px; margin: auto; display: block;">
+    </div>
+</body>
+</html>

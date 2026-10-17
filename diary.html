@@ -1,0 +1,84 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Главные главы — Наше путешествие</title>
+    <style>
+        @import url('https://googleapis.com');
+        :root { --bg-color: #DCD1C4; --text-color: #2F2C2A; --accent-color: #8C6239; --light-accent: #C4B5A5; --card-bg: #F4EFE9; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.7; font-weight: 300; }
+        h1, h2, h3, .d-date { font-family: 'Playfair Display', serif; }
+        
+        nav { display: flex; justify-content: center; padding: 20px; gap: 20px; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; position: sticky; top: 0; background: rgba(220, 209, 196, 0.95); z-index: 100; border-bottom: 1px solid rgba(196, 181, 165, 0.2); backdrop-filter: blur(5px); }
+        nav a { color: var(--text-color); text-decoration: none; opacity: 0.7; font-weight: 400; transition: all 0.3s; position: relative; }
+        nav a::after { content: ''; display: block; width: 0; height: 1px; background: var(--accent-color); transition: width 0.3s; position: absolute; bottom: -4px; left: 0; }
+        nav a:hover { opacity: 1; color: var(--accent-color); } nav a:hover::after { width: 100%; }
+        nav a.active { opacity: 1; color: var(--accent-color); font-weight: 500; } nav a.active::after { width: 100%; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .section-title { text-align: center; font-size: 1.8rem; margin-bottom: 35px; }
+        .section-title::after { content: ''; display: block; width: 40px; height: 1px; background-color: var(--accent-color); margin: 10px auto 0; }
+        
+        .f-wrap { display: flex; flex-wrap: wrap; gap: 20px; justify-content: center; width: 100%; }
+        .f-card { background: var(--card-bg); padding: 20px; border-radius: 6px; border: 1px solid var(--light-accent); text-align: center; flex: 1; min-width: 270px; box-shadow: 0 6px 15px rgba(0,0,0,0.02); }
+        .f-card h3 { font-size: 1.1rem; margin-bottom: 12px; font-style: italic; }
+        .f-img-portrait { width: 100%; height: 340px; object-fit: cover; border-radius: 4px; border: 1px solid var(--light-accent); cursor: zoom-in; }
+        .f-img-big { width: 100%; height: 460px; object-fit: cover; border-radius: 6px; border: 1px solid var(--light-accent); box-shadow: 0 6px 15px rgba(0,0,0,0.02); cursor: zoom-in; }
+        
+        .d-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+        .d-card { background: var(--card-bg); padding: 25px; border: 1px solid var(--light-accent); border-radius: 6px; box-shadow: 0 6px 15px rgba(0,0,0,0.02); transition: transform 0.3s; }
+        .d-card:hover { transform: scale(1.01); }
+        .d-date { font-size: 1.6rem; color: var(--accent-color); margin-bottom: 10px; font-style: italic; }
+        
+        #album-lightbox { display: none; position: fixed; z-index: 99999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 25, 23, 0.96); align-items: center; justify-content: center; user-select: none; }
+        @media (max-width: 768px) { .d-grid { grid-template-columns: 1fr; } }
+        footer { text-align: center; padding: 40px 20px; font-size: 0.8rem; color: #59524C; border-top: 1px solid var(--light-accent); letter-spacing: 0.05em; }
+    </style>
+    <script>
+        function openGlobalZoom(el) {
+            var lb = document.getElementById('album-lightbox'), lbi = document.getElementById('album-lightbox-img');
+            if (lb && lbi) { lbi.src = el.src; lb.style.display = 'flex'; }
+        }
+    </script>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Мы</a>
+        <a href="diary.html" class="active">Главы</a>
+        <a href="travel.html">Дороги</a>
+        <a href="gallery.html">Альбом</a>
+    </nav>
+
+    <section class="container">
+        <h2 class="section-title">Особые взгляды</h2>
+        <div class="f-wrap">
+            <div class="f-card"><h3>Её любимый кадр</h3><img src="ЕЕ любимое фото.jpg" class="f-img-portrait" alt="Ее" onclick="openGlobalZoom(this)"></div>
+            <div class="f-card"><h3>Мой любимый кадр</h3><img src="моя любимая.jpg" class="f-img-portrait" alt="Моя" onclick="openGlobalZoom(this)"></div>
+        </div>
+        <div style="margin-top: 30px; width: 100%; text-align: center;">
+            <h3 style="margin-bottom: 12px; font-style: italic; font-size: 1.1rem;">Наш любимый общий кадр</h3>
+            <img src="общее.jpg" class="f-img-big" alt="Общее" onclick="openGlobalZoom(this)">
+        </div>
+    </section>
+
+    <section class="container">
+        <h2 class="section-title">Главные главы</h2>
+        <div class="d-grid">
+            <div class="d-card"><div class="d-date">5 мая 2023</div><p>Момент, с которого всё началось. Пересечение дорог.</p></div>
+            <div class="d-card"><div class="d-date">29 августа 2023</div><p>День, когда решили идти по этой дороге вместе.</p></div>
+            <div class="d-card" style="grid-column: 1 / -1; text-align: center;">
+                <div class="d-date" style="font-size: 2rem;">24 июля 2024 🤍</div>
+                <p style="max-width: 600px; margin: 0 auto;">Точка отсчёта нашей семьи. День абсолютного тепла.</p>
+            </div>
+        </div>
+    </section>
+
+    <footer><p>Только для нас двоих. Создано с любовью.</p></footer>
+
+    <div id="album-lightbox" onclick="this.style.display='none'">
+        <img id="album-lightbox-img" src="" alt="Zoom" style="max-width: 85%; max-height: 85vh; object-fit: contain; border-radius: 4px; margin: auto; display: block;">
+    </div>
+</body>
+</html>

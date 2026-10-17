@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Альбом — Наше путешествие</title>
+    <style>
+        @import url('https://googleapis.com');
+        :root { --bg-color: #DCD1C4; --text-color: #2F2C2A; --accent-color: #8C6239; --light-accent: #C4B5A5; --card-bg: #F4EFE9; }
+        * { box-sizing: border-box; margin: 0; padding: 0; }
+        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.7; font-weight: 300; }
+        h2 { font-family: 'Playfair Display', serif; }
+        
+        nav { display: flex; justify-content: center; padding: 20px; gap: 20px; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; position: sticky; top: 0; background: rgba(220, 209, 196, 0.95); z-index: 100; border-bottom: 1px solid rgba(196, 181, 165, 0.2); backdrop-filter: blur(5px); }
+        nav a { color: var(--text-color); text-decoration: none; opacity: 0.7; font-weight: 400; transition: all 0.3s; position: relative; }
+        nav a::after { content: ''; display: block; width: 0; height: 1px; background: var(--accent-color); transition: width 0.3s; position: absolute; bottom: -4px; left: 0; }
+        nav a:hover { opacity: 1; color: var(--accent-color); } nav a:hover::after { width: 100%; }
+        nav a.active { opacity: 1; color: var(--accent-color); font-weight: 500; } nav a.active::after { width: 100%; }
+
+        .container { max-width: 900px; margin: 0 auto; padding: 40px 20px; }
+        .section-title { text-align: center; font-size: 1.8rem; margin-bottom: 35px; }
+        .section-title::after { content: ''; display: block; width: 40px; height: 1px; background-color: var(--accent-color); margin: 10px auto 0; }
+        
+        .album-container { position: relative; max-width: 600px; margin: 0 auto; background: var(--card-bg); padding: 15px; border-radius: 8px; border: 1px solid var(--light-accent); box-shadow: 0 10px 25px rgba(0,0,0,0.04); text-align: center; }
+        .album-wrapper { position: relative; width: 100%; height: 400px; overflow: hidden; border-radius: 6px; background: #E6DFD5; }
+        .a-slide { position: absolute; top: 0; left: 0; width: 100%; height: 100%; opacity: 0; transition: opacity 0.4s; object-fit: cover; cursor: zoom-in; }
+        .a-slide.active { opacity: 1 !important; z-index: 2; }
+        .album-btn { position: absolute; top: 50%; transform: translateY(-50%); background: rgba(244, 239, 233, 0.9); color: var(--text-color); border: 1px solid var(--light-accent); width: 42px; height: 46px; border-radius: 50%; cursor: pointer; font-size: 1.2rem; display: flex; align-items: center; justify-content: center; z-index: 10; font-family: monospace; user-select: none; }
+        .btn-prev { left: 25px; } .btn-next { right: 25px; }
+        .album-counter { margin-top: 12px; font-size: 0.8rem; color: #59524C; font-weight: 500; }
+        
+        #album-lightbox { display: none; position: fixed; z-index: 99999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 25, 23, 0.96); align-items: center; justify-content: center; user-select: none; }
+        .lightbox-btn { position: absolute; background: rgba(255,255,255,0.1); color: #FFF; border: 1px solid rgba(255,255,255,0.15); width: 50px; height: 50px; border-radius: 50%; cursor: pointer; font-size: 1.5rem; display: flex; align-items: center; justify-content: center; z-index: 100000; font-family: monospace; }
+        @media (max-width: 768px) { .album-wrapper { height: 300px; } }
+        footer { text-align: center; padding: 40px 20px; font-size: 0.8rem; color: #59524C; border-top: 1px solid var(--light-accent); letter-spacing: 0.05em; }
+    </style>
+</head>
+<body>
+    <nav>
+        <a href="index.html">Мы</a>
+        <a href="diary.html">Главы</a>
+        <a href="travel.html">Дороги</a>
+        <a href="gallery.html" class="active">Альбом</a>
+    </nav>
+
+    <section class="container">
+        <h2 class="section-title">Фотографии с нами</h2>
+        <div class="album-container">
+            <button class="album-btn btn-prev" onclick="changeSlide(-1, event)">&lt;</button>
+            <button class="album-btn btn-next" onclick="changeSlide(1, event)">&gt;</button>
+            <div class="album-wrapper">
+                <img src="1.jpg" class="a-slide active" alt="1" onclick="openZoom()">
+                <img src="2.jpg" class="a-slide" alt="2" onclick="openZoom()">
+                <img src="3.jpg" class="a-slide" alt="3" onclick="openZoom()">
+                <img src="4.jpg" class="a-slide" alt="4" onclick="openZoom()">
+                <img src="5.jpg" class="a-slide" alt="5" onclick="openZoom()">
+                <img src="6.jpg" class="a-slide" alt="6" onclick="openZoom()">
+            </div>
+            <div class="album-counter" id="album-indicator">Снимок 1 из 6</div>
+        </div>
+    </section>
+
+    <footer><p>Только для нас двоих. Создано с любовью.</p></footer>
+
+    <!-- ОКНО КРУПНОГО ПРОСМОТРА -->
+    <div id="album-lightbox" onclick="closeZoom(event)">
+        <button class="lightbox-btn" id="l-prev" onclick="changeSlide(-1, event)" style="left: 20px; top: 50%; transform: translateY(-50%);">&lt;</button>
+        <button class="lightbox-btn" id="l-next" onclick="changeSlide(1, event)" style="right: 20px; top: 50%; transform: translateY(-50%);">&gt;</button>
+        <button onclick="document.getElementById('album-lightbox').style.display='none'" style="position: absolute; top: 20px; right: 20px; background: none; color: #FFF; border: none; font-size: 2rem; cursor: pointer;">&times;</button>
+        <div style="position: relative; max-width: 85%; max-height: 85%; display: flex; flex-direction: column; align-items: center; justify-content: center;">
+            <div id="lightbox-counter" style="color: rgba(255,255,255,0.5); font-size: 0.9rem; margin-bottom: 10px;"></div>
+            <img id="album-lightbox-img" src="" alt="Zoom" style="max-width: 100%; max-height: 75vh; object-fit: contain; border-radius: 4px;" onclick="document.getElementById('album-lightbox').style.display='none'">
+        </div>
+    </div>
+
+    <script>
+        (function() {
+            var idx = 0;
+            window.changeSlide = function(dir, e) {
+                if (e) e.stopPropagation(); 
+                var sld = document.querySelectorAll('.a-slide'), ind = document.getElementById('album-indicator'), lb = document.getElementById('album-lightbox'), lbi = document.getElementById('album-lightbox-img'), lbc = document.getElementById('lightbox-counter');
+                if (!sld.length) return; 
+                sld[idx].classList.remove('active'); 
+                idx += dir; 
+                if (idx >= sld.length) idx = 0; 
+                if (idx < 0) idx = sld.length - 1; 
+                sld[idx].classList.add('active');
+                var txt = 'Снимок ' + (idx + 1) + ' из ' + sld.length; 
+                if (ind) ind.innerText = txt; 
+                if (lb && lb.style.display === 'flex' && lbi) { lbi.src = sld[idx].src; if (lbc) lbc.innerText = txt; }
+            };
+
+            window.openZoom = function() {
+                var sld = document.querySelectorAll('.a-slide'), lb = document.getElementById('album-lightbox'), lbi = document.getElementById('album-lightbox-img'), lbc = document.getElementById('lightbox-counter');
+                if (lb && lbi && sld[idx]) { lbi.src = sld[idx].src; if (lbc) lbc.innerText = 'Снимок ' + (idx + 1) + ' из ' + sld.length; lb.style.display = 'flex'; }
+            };
+
+            window.closeZoom = function(e) { 
+                if (e && e.target.id === 'album-lightbox') document.getElementById('album-lightbox').style.display = 'none'; 
+            };
+        })();
+    </script>
+</body>
+</html>
