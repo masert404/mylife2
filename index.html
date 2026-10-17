@@ -5,73 +5,168 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Наше путешествие длиною в жизнь</title>
     <style>
-        /* Подключаем красивые шрифты Playfair Display и Montserrat */
+        /* Подключаем шрифты Playfair Display и Montserrat */
         @import url('https://googleapis.com');
         
-        :root { --bg-color: #DCD1C4; --text-color: #2F2C2A; --accent-color: #8C6239; --light-accent: #C4B5A5; --card-bg: #F4EFE9; }
+        :root { 
+            --bg-color: #DCD1C4; 
+            --text-color: #2F2C2A; 
+            --accent-color: #8C6239; 
+            --light-accent: #C4B5A5; 
+            --card-bg: #F4EFE9; 
+        }
+        
         * { box-sizing: border-box; margin: 0; padding: 0; }
-        body { font-family: 'Montserrat', sans-serif; background-color: var(--bg-color); color: var(--text-color); line-height: 1.7; font-weight: 300; overflow-x: hidden; }
-        h1, h2, h3, .motto, .c-num, .d-date { font-family: 'Playfair Display', serif; }
         
-        nav { display: flex; justify-content: center; padding: 20px; gap: 20px; font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; position: sticky; top: 0; background: rgba(220, 209, 196, 0.95); z-index: 100; border-bottom: 1px solid rgba(196, 181, 165, 0.2); backdrop-filter: blur(5px); }
-        nav a { color: var(--text-color); text-decoration: none; opacity: 0.7; font-weight: 400; transition: all 0.3s; position: relative; }
-        nav a::after { content: ''; display: block; width: 0; height: 1px; background: var(--accent-color); transition: width 0.3s; position: absolute; bottom: -4px; left: 0; }
-        nav a:hover { opacity: 1; color: var(--accent-color); } nav a:hover::after { width: 100%; }
-        nav a.active { opacity: 1; color: var(--accent-color); font-weight: 500; }
-        nav a.active::after { width: 100%; }
+        body { 
+            font-family: 'Montserrat', sans-serif; 
+            background-color: var(--bg-color); 
+            color: var(--text-color); 
+            line-height: 1.6; 
+            font-weight: 300; 
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+            justify-content: center;
+            align-items: center;
+        }
 
-        .hero { max-width: 800px; margin: 40px auto; text-align: center; padding: 0 20px; }
-        .hero h1 { font-size: 2.8rem; margin-bottom: 15px; font-style: italic; }
-        .motto { font-size: 1.1rem; color: var(--accent-color); margin-bottom: 30px; font-style: italic; }
-        .c-wrap { display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 35px; }
-        .c-box { background: var(--card-bg); padding: 18px; border-radius: 6px; border: 1px solid var(--light-accent); text-align: center; box-shadow: 0 8px 15px rgba(0,0,0,0.02); transition: transform 0.3s; }
-        .c-box:hover { transform: translateY(-3px); }
-        .c-num { font-size: 2.2rem; color: var(--accent-color); font-weight: 500; margin-bottom: 3px; }
-        .c-lab { font-size: 0.7rem; text-transform: uppercase; letter-spacing: 0.05em; color: #59524C; }
-        .hero-img { width: 100%; max-height: 520px; object-fit: cover; border-radius: 6px; border: 1px solid var(--light-accent); box-shadow: 0 10px 25px rgba(0,0,0,0.04); cursor: zoom-in; }
+        h1, h2, .motto, .welcome-title { font-family: 'Playfair Display', serif; }
         
-        #album-lightbox { display: none; position: fixed; z-index: 99999; top: 0; left: 0; width: 100%; height: 100%; background: rgba(26, 25, 23, 0.96); align-items: center; justify-content: center; user-select: none; }
-        @media (max-width: 768px) { .c-wrap { grid-template-columns: 1fr; } }
-        footer { text-align: center; padding: 40px 20px; font-size: 0.8rem; color: #59524C; border-top: 1px solid var(--light-accent); letter-spacing: 0.05em; margin-top: 40px; }
+        /* Главный контейнер заставки */
+        .welcome-container {
+            max-width: 800px;
+            width: 100%;
+            padding: 40px 20px;
+            text-align: center;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            flex-grow: 1;
+            /* Плавное проявление всей страницы при загрузке */
+            animation: fadeInPage 1.5s ease-in-out forwards;
+        }
+
+        .welcome-title {
+            font-size: 3rem;
+            margin-bottom: 15px;
+            font-style: italic;
+            color: var(--text-color);
+        }
+
+        .motto {
+            font-size: 1.1rem;
+            color: var(--accent-color);
+            margin-bottom: 50px;
+            font-style: italic;
+            letter-spacing: 0.05em;
+        }
+
+        /* Интерактивное навигационное меню в виде плитки */
+        .portal-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+            width: 100%;
+            max-width: 700px;
+            margin-bottom: 40px;
+        }
+
+        .portal-card {
+            background: var(--card-bg);
+            padding: 30px 20px;
+            border-radius: 8px;
+            border: 1px solid var(--light-accent);
+            text-decoration: none;
+            color: var(--text-color);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.02);
+            transition: all 0.4s cubic-bezier(0.165, 0.84, 0.44, 1);
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+        }
+
+        /* Эффект при наведении на карточку перехода */
+        .portal-card:hover {
+            transform: translateY(-5px);
+            background-color: #FFFDFB;
+            border-color: var(--accent-color);
+            box-shadow: 0 15px 30px rgba(140, 98, 57, 0.08);
+        }
+
+        .portal-card h3 {
+            font-family: 'Playfair Display', serif;
+            font-size: 1.3rem;
+            font-style: italic;
+            margin-bottom: 8px;
+            color: var(--accent-color);
+            transition: color 0.3s;
+        }
+
+        .portal-card p {
+            font-size: 0.75rem;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            color: #736960;
+        }
+
+        /* Анимация плавного появления */
+        @keyframes fadeInPage {
+            from { opacity: 0; transform: translateY(10px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        /* Адаптивность для мобильных телефонов */
+        @media (max-width: 600px) {
+            .welcome-title { font-size: 2.2rem; }
+            .portal-grid { grid-template-columns: 1fr; gap: 15px; }
+            .portal-card { padding: 22px 15px; }
+        }
+
+        footer { 
+            text-align: center; 
+            padding: 25px 20px; 
+            font-size: 0.8rem; 
+            color: #59524C; 
+            width: 100%;
+            border-top: 1px solid rgba(196, 181, 165, 0.2); 
+            letter-spacing: 0.05em; 
+        }
     </style>
-    <script>
-        function runSystemCounters() {
-            var d = { 'meet-counter': new Date(Date.UTC(2023, 4, 5)), 'love-counter': new Date(Date.UTC(2023, 7, 29)), 'wedding-counter': new Date(Date.UTC(2024, 6, 24)) };
-            var t = new Date(), tUTC = Date.UTC(t.getFullYear(), t.getMonth(), t.getDate());
-            for (var id in d) { var el = document.getElementById(id); if (el) { var df = Math.floor((tUTC - d[id].getTime()) / 86400000); if (df > 0) el.textContent = df; } }
-        }
-        window.addEventListener('DOMContentLoaded', runSystemCounters);
-
-        function openGlobalZoom(el) {
-            var lb = document.getElementById('album-lightbox'), lbi = document.getElementById('album-lightbox-img');
-            if (lb && lbi) { lbi.src = el.src; lb.style.display = 'flex'; }
-        }
-    </script>
 </head>
 <body>
-    <!-- НАВИГАЦИЯ НА ДРУГИЕ ФАЙЛЫ -->
-    <nav>
-        <a href="index.html" class="active">Мы</a>
-        <a href="diary.html">Главы</a>
-        <a href="travel.html">Дороги</a>
-        <a href="gallery.html">Альбом</a>
-    </nav>
 
-    <header class="hero">
-        <h1>Наше путешествие длиною в жизнь</h1>
+    <main class="welcome-container">
+        <!-- Главное приветствие -->
+        <h1 class="welcome-title">Наше путешествие длиною в жизнь</h1>
         <p class="motto">Пространство для двоих: воспоминания, дороги и смыслы</p>
-        <div class="c-wrap">
-            <div class="c-box"><div class="c-num" id="meet-counter">1258</div><div class="c-lab">со знакомства</div></div>
-            <div class="c-box"><div class="c-num" id="love-counter">1142</div><div class="c-lab">в отношениях</div></div>
-            <div class="c-box"><div class="c-num" id="wedding-counter">812</div><div class="c-lab">в браке 🤍</div></div>
+
+        <!-- Интерактивные двери-карточки в другие разделы -->
+        <div class="portal-grid">
+            <a href="diary.html" class="portal-card">
+                <h3>Главы</h3>
+                <p>История & Кадры</p>
+            </a>
+            
+            <a href="travel.html" class="portal-card">
+                <h3>Дороги</h3>
+                <p>Наши маршруты</p>
+            </a>
+            
+            <a href="gallery.html" class="portal-card">
+                <h3>Альбом</h3>
+                <p>Интерактивные снимки</p>
+            </a>
         </div>
-        <img src="Свадебное.jpg" class="hero-img" alt="Свадьба" onclick="openGlobalZoom(this)">
-    </header>
+    </main>
 
-    <footer><p>Только для нас двоих. Создано с любовью.</p></footer>
+    <footer>
+        <p>Только для нас двоих. Создано с любовью.</p>
+    </footer>
 
-    <div id="album-lightbox" onclick="this.style.display='none'">
-        <img id="album-lightbox-img" src="" alt="Zoom" style="max-width: 85%; max-height: 85vh; object-fit: contain; border-radius: 4px; margin: auto; display: block;">
-    </div>
 </body>
 </html>
+
